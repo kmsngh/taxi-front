@@ -7,7 +7,7 @@ body {
     'Helvetica Neue', sans-serif !important;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  color: #555;
+  color: #333333;
 }
 
 h1 {
@@ -16,9 +16,22 @@ h1 {
   margin: 0 !important;
 }
 
+.muted {
+  color: #888888;
+  margin: auto;
+  padding-top: 4px;
+  width: fit-content;
+}
+
 $theme-colors: (
-  'primary': #1a365a,
+  'primary': #eba12a,
   'danger': #ff4136,
 );
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
 
 @import 'node_modules/bootstrap/scss/bootstrap';
