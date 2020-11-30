@@ -7,26 +7,43 @@ body {
     'Helvetica Neue', sans-serif !important;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  color: #333333;
+  color: #333333 !important;
 }
 
 h1 {
-  font-family: 'NanumSquare ExtraBold';
+  font-family: 'NanumSquare ExtraBold' !important;
   font-size: 20pt !important;
   margin: 0 !important;
+}
+
+h2 {
+  font-family: 'NanumSquare Light';
+  font-size: 14pt !important;
+  margin: 0 !important;
+  @media (max-width: 767px) {
+    font-size: 14px !important;
+  }
 }
 
 .muted {
   color: #888888;
   margin: auto;
-  padding-top: 4px;
+  padding-top: 8px;
   width: fit-content;
 }
 
 $theme-colors: (
-  'primary': #eba12a,
+  'primary': #1675e0,
   'danger': #ff4136,
 );
+
+.header-toggle {
+  color: #333333;
+  cursor: pointer;
+  @media (min-width: 768px) {
+    display: none;
+  }
+}
 
 input::-webkit-outer-spin-button,
 input::-webkit-inner-spin-button {
@@ -34,4 +51,5 @@ input::-webkit-inner-spin-button {
   margin: 0;
 }
 
+@import 'rsuite/dist/styles/rsuite-default';
 @import 'node_modules/bootstrap/scss/bootstrap';

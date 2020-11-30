@@ -1,7 +1,8 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import { Formik } from 'formik';
 import * as Yup from 'yup';
+import { withRouter } from 'react-router-dom';
 
 import {
   Container,
@@ -11,16 +12,17 @@ import {
   Button,
   Collapse,
 } from 'react-bootstrap';
-import { ReactComponent as Driver } from 'static/driver.svg';
-import { ReactComponent as Passenger } from 'static/passenger.svg';
+import { ReactComponent as Driver } from 'static/driver3.svg';
+import { ReactComponent as Passenger } from 'static/passenger2.svg';
 import { Header, Footer } from 'components/templates';
+
+import * as userAPI from 'api/user';
 
 const RegisterModule = styled(Col)`
   display: flex;
   flex-direction: column;
 
   padding-top: 16px;
-  transition: 0.4s;
 
   @media (min-width: 768px) {
     padding: 30px 50px;
@@ -36,13 +38,14 @@ const ChooseModule = styled(RegisterModule)`
   border-radius: 8px;
   margin: 8px 16px;
   padding: 16px;
-  box-shadow: 0 4px 4px #dddddd;
   height: 250px;
   align-items: center;
   justify-content: center;
   cursor: pointer;
+  transition: 0.4s;
+  box-shadow: 0 4px 4px #dddddd;
   :hover {
-    box-shadow: 0 8px 16px #dddddd;
+    box-shadow: 0 8px 12px #dddddd;
   }
   @media (min-width: 992px) {
     height: 300px;
@@ -56,14 +59,34 @@ const FormWrapper = styled(Form)`
 
 const RegisterHeading = styled.h1`
   text-align: center;
+  font-family: NanumSquare Extrabold;
 `;
 
-const Register = () => {
+const Register = ({ history }) => {
+  const [loading, setLoading] = useState(true);
   const [userType, setUserType] = useState(0);
+
+  useEffect(() => {
+    userAPI
+      .check()
+      .then(() => history.push('/'))
+      .catch(() => {
+        setLoading(false);
+      });
+  });
+
+  if (loading) return null;
 
   const RegisterForm = () => {
     const handleRegistration = (values) => {
-      console.log(values);
+      userAPI
+        .register(values)
+        .then(() => {
+          history.push('/login');
+        })
+        .catch((err) => {
+          alert(err.response.data);
+        });
     };
 
     const schema = Yup.object({
@@ -71,12 +94,16 @@ const Register = () => {
         .min(4, '4글자 이상이여야 합니다')
         .max(16, '16글자 이하여야 합니다')
         .required('필수'),
-      phone: Yup.number()
-        .min(10000000000, '11자리 숫자여야 합니다')
-        .max(99999999999, '11자리 숫자여야 합니다')
+      phone: Yup.string()
+        .min(11, '11자리 숫자여야 합니다')
+        .max(11, '11자리 숫자여야 합니다')
         .required('필수'),
       password: Yup.string()
         .min(6, '6자 이상이여야 합니다')
+        .matches(
+          '^[a-zA-Z0-9!@#$%^*]*$',
+          '영문 및 !, @, #, $, %, ^, *만 입력이 가능합니다.'
+        )
         .required('필수'),
     });
 
@@ -94,8 +121,8 @@ const Register = () => {
                 type="text"
                 name="nickname"
                 placeholder="닉네임은 다른 사용자들에게 공개됩니다."
-                value={values.nickname}
                 onChange={handleChange}
+                value={values.nickname}
                 isInvalid={!!errors.nickname}
               />
               <Form.Control.Feedback type="invalid">
@@ -105,10 +132,15 @@ const Register = () => {
             <Form.Group>
               <Form.Label>전화번호</Form.Label>
               <Form.Control
-                type="number"
+                // type="number"
                 name="phone"
+                type="text"
+                onChange={(e) => {
+                  if (e.target.value.match('^[0-9]*$') != null) {
+                    handleChange(e);
+                  }
+                }}
                 value={values.phone}
-                onChange={handleChange}
                 isInvalid={!!errors.phone}
               />
               <Form.Control.Feedback type="invalid">
@@ -199,7 +231,7 @@ const Register = () => {
           <Module
             src={Driver}
             role="운전기사"
-            description="택시승강장에 도착하기 전 미리 승객들에게 알리세요."
+            description="택시승강장 도착 전 미리 승객들에게 알리세요."
             type={2}
           />
         </Row>
@@ -212,4 +244,4 @@ const Register = () => {
   );
 };
 
-export default Register;
+export default withRouter(Register);
