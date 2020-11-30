@@ -46,6 +46,7 @@ const ChooseModule = styled(RegisterModule)`
   box-shadow: 0 4px 4px #dddddd;
   :hover {
     box-shadow: 0 8px 12px #dddddd;
+    background-color: #ddeeff;
   }
   @media (min-width: 992px) {
     height: 300px;
