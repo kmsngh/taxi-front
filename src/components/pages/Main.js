@@ -392,7 +392,7 @@ const Main = ({ data }) => {
             <Button
               size="lg"
               appearance="primary"
-              style={{ width: '95px' }}
+              style={{ width: '90px' }}
               onClick={handleStartArrivesAt}
             >
               등록하기
