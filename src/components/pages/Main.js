@@ -139,13 +139,22 @@ const Main = ({ data }) => {
   const [user, setUser] = useState(data);
   const [showAll, setShowAll] = useState(false);
   const { nickname, phone, isDriver } = data;
-  const formatPhone =
-    !phone ||
-    phone.substring(0, 3) +
-      '-' +
-      phone.substring(3, 7) +
-      '-' +
-      phone.substring(7, 11);
+
+  const phoneParser = (p, secret = false) => {
+    if (secret) {
+      return !p || p.substring(0, 3) + '-****-' + p.substring(7, 11);
+    }
+    return (
+      !p ||
+      p.substring(0, 3) +
+        '-' +
+        p.substring(3, 7) +
+        '-' +
+        p.substring(7, 11)
+    );
+  };
+
+  const formatPhone = phoneParser(phone);
 
   const sortUsers = (a, b) => {
     if (a.validWaitingSince && !b.validWaitingSince) return -1;
@@ -208,10 +217,13 @@ const Main = ({ data }) => {
                     <div>
                       <div className="d-flex justify-content-center">
                         <JoinButton
+                          style={{ width: '200px' }}
                           appearance="primary"
                           onClick={() => handleTryJoin(info.id)}
                         >
-                          {isDriver ? '픽업하기' : '탑승하기'}
+                          {isDriver
+                            ? `${phoneParser(info.phone, true)} 픽업하기`
+                            : `${phoneParser(info.phone, true)} 탑승하기`}
                         </JoinButton>
                       </div>
                     </div>
