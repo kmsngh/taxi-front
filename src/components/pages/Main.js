@@ -90,7 +90,7 @@ const MyButton = styled(Button)`
 `;
 
 const MinuteButton = styled(Button)`
-  width: 70px;
+  width: 65px;
 `;
 
 const timeBetween = (date, since, detailed) => {
