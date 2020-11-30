@@ -79,6 +79,7 @@ const Register = ({ history }) => {
 
   const RegisterForm = () => {
     const handleRegistration = (values) => {
+      values.isDriver = userType === 2;
       userAPI
         .register(values)
         .then(() => {
@@ -132,7 +133,6 @@ const Register = ({ history }) => {
             <Form.Group>
               <Form.Label>전화번호</Form.Label>
               <Form.Control
-                // type="number"
                 name="phone"
                 type="text"
                 onChange={(e) => {
