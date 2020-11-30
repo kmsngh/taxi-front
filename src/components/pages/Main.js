@@ -47,7 +47,6 @@ const ActiveUserCard = styled(UserCard)`
   transition: 0.4s;
   :hover {
     box-shadow: 0 8px 12px #dddddd;
-    background-color: #ddeeff;
   }
 `;
 
@@ -275,7 +274,7 @@ const Main = ({ data }) => {
         setLoading(false);
       });
     }
-  }, [isDriver, loading]);
+  }, [isDriver, loading, activeTab]);
 
   useEffect(() => {
     handleSetTaxiPlatform();
