@@ -412,21 +412,6 @@ const Main = ({ data }) => {
       ) : status === 1 ? (
         <>
           <List size="lg">
-            {(arrivesAt &&
-              arrivesAtValidUntil &&
-              arrivesAt.getTime() - arrivesAtValidUntil.getTime() <
-                50) || (
-              <List.Item style={{ textAlign: 'center' }}>
-                {timeBetween(arrivesAt, true) ? (
-                  <div>
-                    {timeBetween(arrivesAt, true, true).parsed}
-                    <span> 뒤 도착 예정</span>
-                  </div>
-                ) : (
-                  <Loader />
-                )}
-              </List.Item>
-            )}
             <List.Item style={{ textAlign: 'center' }}>
               {timeBetween(arrivesAtValidUntil, true) ? (
                 <div>
@@ -434,12 +419,19 @@ const Main = ({ data }) => {
                     strokeColor="#ffc107"
                     showInfo={false}
                     percent={
-                      timeBetween(arrivesAtValidUntil, true, true)
-                        .seconds / 6
+                      Math.min(
+                        timeBetween(arrivesAtValidUntil, true, true)
+                          .seconds,
+                        timeBetween(arrivesAt, true, true).seconds
+                      ) /
+                      ((arrivesAtCooltime * 60) / 100)
                     }
                   />
                   <h1>
-                    {timeBetween(arrivesAtValidUntil, true, true).parsed}
+                    {timeBetween(arrivesAtValidUntil, true, true).seconds <
+                    timeBetween(arrivesAt, true, true).seconds
+                      ? timeBetween(arrivesAtValidUntil, true, true).parsed
+                      : timeBetween(arrivesAt, true, true).parsed}
                   </h1>
                   <span>뒤 자동 취소</span>
                 </div>
